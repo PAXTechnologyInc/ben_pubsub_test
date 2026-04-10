@@ -1,0 +1,34 @@
+{
+    "service": {
+        "base_url": "http://localhost:80",
+        "notification_endpoint": "/MerchantSolution/notification",
+        "health_endpoint": "/health",
+        "request_timeout_seconds": 30
+    },
+    "auth": {
+        "mode": "ip",
+        "x_forwarded_for": "127.0.0.1",
+        "jwt_token": ""
+    },
+    "test_data": {
+        "payload_file": "boarding_payload.json",
+        "merchant_name": "THORNTONS #0304",
+        "terminal_id": "PAX12345678",
+        "model": "A920Pro",
+        "reseller_name": "Worldpay"
+    },
+    "logging": {
+        "level": "DEBUG",
+        "log_dir": "logs",
+        "log_file": "boarding_test_{timestamp}.log",
+        "console_output": true
+    },
+    "retry": {
+        "max_retries": 3,
+        "retry_delay_seconds": 2
+    },
+    "async_verification": {
+        "poll_interval_seconds": 5,
+        "max_wait_seconds": 60
+    }
+}

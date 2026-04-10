@@ -1,0 +1,480 @@
+{
+  "eventType": "equipment.terminals.created",
+  "notificationId": "{{notificationId}}",
+  "eventCount": 1,
+  "version": 2.0,
+  "createdAt": "{{createdAt}}",
+  "data": {
+    "equipmentData": [
+      {
+        "hierarchy": {
+          "salesOrganizationCode": "53",
+          "salesOrganizationName": "MPS",
+          "salesChannelCode": "VANTIV",
+          "salesChannelName": "VANTIV",
+          "partnerGroupId": "REDOCORGRP000133",
+          "partnerGroupName": "REDOCORGRP000133",
+          "nationalCode": null,
+          "nationalName": null,
+          "superChainCode": "S00000THON",
+          "superChainName": "THON",
+          "branchCode": "5422",
+          "branchName": "{{resellerName}}",
+          "chainCode": "072708",
+          "chainName": "THORNTONS, INC.",
+          "storeNumber": "000000304",
+          "storeName": "THORNTONS #0304",
+          "merchantId": "{{worldpayMID}}",
+          "merchantName": "{{merchantName}}",
+          "divisionCode": null,
+          "divisionName": null
+        },
+        "business": {
+          "chainCode": "072708",
+          "chainEntityId": "70553180",
+          "chainAcro": "THON",
+          "createdDate": "2003-11-15",
+          "legalName": "THORNTONS, INC.",
+          "dbaName": "THORNTONS, INC.",
+          "partners": [
+            {
+              "id": "COR53",
+              "name": "Fifth Third Bank",
+              "type": {
+                "code": "3RD",
+                "shortDescription": "Third Party",
+                "longDescription": "Third Party Partner"
+              }
+            }
+          ],
+          "federalTaxId": "*****8206",
+          "ownershipType": "CORPORATION",
+          "productServiceSold": null,
+          "industryType": "OTHER",
+          "establishedDate": "0001-01-01",
+          "website": null,
+          "emvEnabledDate": "2016-07-07",
+          "customerServiceContact": null,
+          "primaryContact": {
+            "title": "Accounting Manager",
+            "firstName": "Theresa",
+            "middleInitial": null,
+            "lastName": "Mattingly",
+            "ssn": "*****0202",
+            "email": "ANONYMOUS@VANTIV.COM",
+            "phoneNumber": "5025721132",
+            "phoneNumberExt": null,
+            "phoneType": "U",
+            "alternatePhone": null,
+            "alternatePhoneType": null,
+            "faxNumber": null,
+            "autoCallIndicator": "N"
+          },
+          "physicalAddress": {
+            "addressLine1": "2600 James Thornton Way",
+            "addressLine2": null,
+            "city": "LOUISVILLE",
+            "county": "JEFFERSON",
+            "state": "KY",
+            "country": "US",
+            "postalCode": "40245",
+            "internationalPostalCode": null,
+            "postalCodeExtension": "5329",
+            "timeZone": "EDT"
+          },
+          "mailingAddress": null,
+          "owners": [],
+          "guarantors": [
+            {
+              "type": "Guarantor 1 Contact",
+              "title": null,
+              "firstName": "CHRISTINE",
+              "middleInitial": null,
+              "lastName": "KORDT",
+              "ssn": "*****0183",
+              "dob": "******",
+              "email": "ANONYMOUS@VANTIV.COM",
+              "phoneNumber": null,
+              "phoneNumberExt": null,
+              "phoneType": "Unknown",
+              "alternatePhone": null,
+              "alternatePhoneType": null,
+              "faxNumber": null,
+              "ownershipPercentage": 0,
+              "addressLine1": null,
+              "addressLine2": null,
+              "city": null,
+              "state": null,
+              "country": null,
+              "postalCode": null,
+              "postalCodeExtension": null
+            },
+            {
+              "type": "Guarantor 2 Contact",
+              "title": null,
+              "firstName": "CHRISTINE",
+              "middleInitial": null,
+              "lastName": "KORDT",
+              "ssn": "*****0175",
+              "dob": "******",
+              "email": "ANONYMOUS@VANTIV.COM",
+              "phoneNumber": null,
+              "phoneNumberExt": null,
+              "phoneType": "Unknown",
+              "alternatePhone": null,
+              "alternatePhoneType": null,
+              "faxNumber": null,
+              "ownershipPercentage": 0,
+              "addressLine1": null,
+              "addressLine2": null,
+              "city": null,
+              "state": null,
+              "country": null,
+              "postalCode": null,
+              "postalCodeExtension": null
+            },
+            {
+              "type": "Guarantor 3 Contact",
+              "title": null,
+              "firstName": "5/3",
+              "middleInitial": null,
+              "lastName": "BANK",
+              "ssn": "*****0197",
+              "dob": null,
+              "email": "ANONYMOUS@VANTIV.COM",
+              "phoneNumber": null,
+              "phoneNumberExt": null,
+              "phoneType": "Unknown",
+              "alternatePhone": null,
+              "alternatePhoneType": null,
+              "faxNumber": null,
+              "ownershipPercentage": 0,
+              "addressLine1": null,
+              "addressLine2": null,
+              "city": null,
+              "state": null,
+              "country": null,
+              "postalCode": null,
+              "postalCodeExtension": null
+            },
+            {
+              "type": "Guarantor 4 Contact",
+              "title": null,
+              "firstName": "5/3",
+              "middleInitial": null,
+              "lastName": "BANK",
+              "ssn": "*****0193",
+              "dob": null,
+              "email": "ANONYMOUS@VANTIV.COM",
+              "phoneNumber": null,
+              "phoneNumberExt": null,
+              "phoneType": "Unknown",
+              "alternatePhone": null,
+              "alternatePhoneType": null,
+              "faxNumber": null,
+              "ownershipPercentage": 0,
+              "addressLine1": null,
+              "addressLine2": null,
+              "city": null,
+              "state": null,
+              "country": null,
+              "postalCode": null,
+              "postalCodeExtension": null
+            },
+            {
+              "type": "Guarantor 5 Contact",
+              "title": null,
+              "firstName": "5/3",
+              "middleInitial": null,
+              "lastName": "BANK",
+              "ssn": "*****0191",
+              "dob": null,
+              "email": "ANONYMOUS@VANTIV.COM",
+              "phoneNumber": null,
+              "phoneNumberExt": null,
+              "phoneType": "Unknown",
+              "alternatePhone": null,
+              "alternatePhoneType": null,
+              "faxNumber": null,
+              "ownershipPercentage": 0,
+              "addressLine1": null,
+              "addressLine2": null,
+              "city": null,
+              "state": null,
+              "country": null,
+              "postalCode": null,
+              "postalCodeExtension": null
+            }
+          ],
+          "salesPerson": null,
+          "merchantPartnerAccountId": null
+        },
+        "location": {
+          "storeNumber": "000000304",
+          "storeEntityId": "71369348",
+          "storeName": "{{merchantName}}",
+          "merchantId": "4445108259069",
+          "motoIndicator": false,
+          "ecomIndicator": false,
+          "merchantEntityId": "71369271",
+          "merchantDescription": "THORNTONS #0304          ROUND LAKE PAIL",
+          "billingDescriptor": "THORNTONS #0304",
+          "mcc": "5542",
+          "mccDescription": "AUTOMATED FUEL ",
+          "surchargeIndicator": false,
+          "seasonalMerchant": false,
+          "activeMonths": null,
+          "status": "Open",
+          "alternateMerchantId": null,
+          "thirdPartyMerchantId": null,
+          "primaryContact": {
+            "title": null,
+            "firstName": "STORE",
+            "middleInitial": null,
+            "lastName": "MANAGER",
+            "ssn": "*****1091",
+            "email": "ANONYMOUS@VANTIV.COM",
+            "phoneNumber": "5023398385",
+            "phoneNumberExt": null,
+            "faxNumber": null
+          },
+          "physicalAddress": {
+            "addressLine1": "598 E. Washington St.",
+            "addressLine2": null,
+            "city": "Round Lake Park",
+            "county": "LAKE",
+            "state": "IL",
+            "country": "US",
+            "postalCode": "60073",
+            "internationalPostalCode": null,
+            "postalCodeExtension": "3017",
+            "timeZone": "CDT"
+          },
+          "deploymentContact": null,
+          "deploymentAddress": null,
+          "paymentMethods": {
+            "valutecEnabled": false,
+            "valutec": null,
+            "premierIssueGiftCardEnabled": true,
+            "svsGiftCardEnabled": false
+          },
+          "bankDetails": {
+            "accountType": {
+              "code": "C",
+              "description": "Checking"
+            },
+            "accountOwnerType": {
+              "code": "PPD",
+              "description": "PRIVATE"
+            },
+            "bankName": "PNC BANK, NATIONAL ASSOCIATION",
+            "routingNumber": "******",
+            "accountNumber": "******3403",
+            "city": "PITTSBURGH",
+            "state": "PA",
+            "zip": "152120000"
+          },
+          "cardDetails": [
+            {
+              "code": "01",
+              "shortDescription": "VISA",
+              "longDescription": "VISA",
+              "externalAccountNumber": "******",
+              "discoverAcquirerCode": "N",
+              "paypalAcceptCode": null,
+              "cashbackAmount": 0.00,
+              "status": "Open"
+            },
+            {
+              "code": "02",
+              "shortDescription": "MC",
+              "longDescription": "MASTERCARD",
+              "externalAccountNumber": null,
+              "discoverAcquirerCode": "N",
+              "paypalAcceptCode": null,
+              "cashbackAmount": 0.00,
+              "status": "Open"
+            }
+          ],
+          "worldpayMid": "134000108259069009990095"
+        },
+        "terminals": [
+          {
+            "hostMerchantNumber": "108259069",
+            "terminalId": "212",
+            "terminalNumber": "9",
+            "terminalStatus": "ACTIVE",
+            "bankId": "1340",
+            "productVersion": null,
+            "vendorTerminalId": "{{terminalId}}",
+            "thirdPartyId": null,
+            "rollupId": "20",
+            "agentId": "0",
+            "terminalType": {
+              "code": "1040",
+              "description": "{{model}}"
+            },
+            "environment": {
+              "code": "0",
+              "description": "Retail"
+            },
+            "application": {
+              "id": "4681",
+              "code": "HRT650MA",
+              "description": "HRT650CA"
+            },
+            "terminalProductCategory": {
+              "credit": true,
+              "debit": false,
+              "ebt": false,
+              "gift": false,
+              "getiCheck": false
+            },
+            "customizationDetail": [
+              {
+                "id": 2,
+                "internalName": "FOOTER",
+                "name": "Receipt Footer",
+                "rawValue": null,
+                "value": null
+              },
+              {
+                "id": 197,
+                "internalName": "VALUTEC_ID",
+                "name": "Valutec ID",
+                "rawValue": "1234567",
+                "value": null
+              },
+              {
+                "id": 10,
+                "internalName": "AUTO_CLOS_TIME",
+                "name": "Auto-Close Time",
+                "rawValue": "0430",
+                "value": null
+              },
+              {
+                "id": 35,
+                "internalName": "INTERNET_CONNECTION",
+                "name": "Internet Connection Type",
+                "rawValue": "D",
+                "value": null
+              },
+              {
+                "id": 41,
+                "internalName": "CUSTOMER_RECEIPT",
+                "name": "Customer Receipt Option",
+                "rawValue": "C",
+                "value": null
+              },
+              {
+                "id": 46,
+                "internalName": "STORE_AND_FORWARD",
+                "name": "Store and Forward",
+                "rawValue": "D",
+                "value": "1"
+              },
+              {
+                "id": 54,
+                "internalName": "RETAIL_TIP_PROCESSING",
+                "name": "Retail Tip Processing",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 55,
+                "internalName": "SUG_TIP_PERCENTAGE_1",
+                "name": "Suggested Tip Percentage 1",
+                "rawValue": "15",
+                "value": null
+              },
+              {
+                "id": 56,
+                "internalName": "SUG_TIP_PERCENTAGE_2",
+                "name": "Suggested Tip Percentage 2",
+                "rawValue": "18",
+                "value": null
+              },
+              {
+                "id": 57,
+                "internalName": "SUG_TIP_PERCENTAGE_3",
+                "name": "Suggested Tip Percentage 3",
+                "rawValue": "20",
+                "value": null
+              },
+              {
+                "id": 113,
+                "internalName": "ALLOW_PARTIAL_APPROVAL",
+                "name": "Allow Partial Approval",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 156,
+                "internalName": "SERVER_CLERK",
+                "name": "Server Clerk",
+                "rawValue": "N",
+                "value": "0"
+              },
+              {
+                "id": 187,
+                "internalName": "ALLOW_UNM_RTRN",
+                "name": "Allow Unmatched Returns",
+                "rawValue": "Y",
+                "value": null
+              },
+              {
+                "id": 189,
+                "internalName": "ENABLE_QR_CODE",
+                "name": "Enable QR Code",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 190,
+                "internalName": "SELF_DEPLOY",
+                "name": "Self Deploy",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 195,
+                "internalName": "PASSCODE_RESET",
+                "name": "Passcode Reset",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 196,
+                "internalName": "REPORT_1ST_TRANSACTION",
+                "name": "Report 1st Transaction",
+                "rawValue": "N",
+                "value": null
+              },
+              {
+                "id": 201,
+                "internalName": "HOSTMIGRATION",
+                "name": "HostMigration",
+                "rawValue": "Y",
+                "value": null
+              }
+            ],
+            "peripherals": [],
+            "acquirerBins": {
+              "masterCard": "**3684",
+              "visa": "**4500"
+            },
+            "gatewayCustomData": null,
+            "tierLevel": null
+          }
+        ]
+      }
+    ]
+  },
+  "notificationHistory": [
+    {
+      "id": "97231346-57e5-48b8-a1c1-d455b51ca580",
+      "status": "FAILED_TO_DELIVER",
+      "createdAt": "2024-09-23T15:24:23.488242Z"
+    }
+  ]
+}
