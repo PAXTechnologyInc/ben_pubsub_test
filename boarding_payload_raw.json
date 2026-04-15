@@ -1,9 +1,9 @@
 {
   "eventType": "equipment.terminals.created",
-  "notificationId": "{{notificationId}}",
+  "notificationId": "42379122",
   "eventCount": 1,
   "version": 2.0,
-  "createdAt":  "{{createdAt}}",
+  "createdAt": "2026-04-15T15:48:13.000-04:00",
   "data": {
       "equipmentData": [
           {
@@ -19,13 +19,13 @@
                   "superChainCode": "S00000THON",
                   "superChainName": "THON",
                   "branchCode": "5422",
-                  "branchName": "{{resellerName}}",
+                  "branchName": "Valutec",
                   "chainCode": "072708",
                   "chainName": "THORNTONS, INC.",
                   "storeNumber": "000000304",
                   "storeName": "THORNTONS #0304",
-                  "merchantId": "{{worldpayMID}}",
-                  "merchantName": "{{merchantName}}",
+                  "merchantId": "5922820006187008",
+                  "merchantName": "TerryTest",
                   "divisionCode": null,
                   "divisionName": null
               },
@@ -212,7 +212,7 @@
               "location": {
                   "storeNumber": "000000304",
                   "storeEntityId": "71369348",
-                  "storeName": "{{merchantName}}",
+                  "storeName": "TerryTest",
                   "merchantId": "4445108259069",
                   "motoIndicator": false,
                   "ecomIndicator": false,
@@ -306,13 +306,13 @@
                       "terminalStatus": "ACTIVE",
                       "bankId": "1340",
                       "productVersion": null,
-                      "vendorTerminalId": "{{terminalId}}",
+                      "vendorTerminalId": "7880",
                       "thirdPartyId": null,
                       "rollupId": "20",
                       "agentId": "0",
                       "terminalType": {
                           "code": "1040",
-                          "description": "{{model}}"
+                          "description": "Valutec Only PAX A920 MAX"
                       },
                       "environment": {
                           "code": "0",

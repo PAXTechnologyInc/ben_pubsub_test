@@ -4,47 +4,60 @@
 
 This is a **data-driven** Python automation test framework for the **WORLDPAY_PAXSTORE_BRIDGE** Boarding microservice. It translates the Postman collection (BEN.postman_collection.json) into executable pytest-based test cases that target the `/MerchantSolution/notification` webhook endpoint.
 
-## Architecture
+## Project Structure
 
 ```
-C:\Users\terry.liu\works\works\pubsub\code\new\
-├── run_boarding_test.py        # Main test script (pytest-based)
-├── config.json                 # Environment & test configuration
-├── boarding_payload.json       # External data file (Pub/Sub message template)
-├── requirements.txt            # Python dependencies
-├── README_boarding_test.md     # This document
-└── logs/                       # Auto-generated test logs & HTML reports
+ben_pubsub_test/
+├── run_boarding_test.py            # Entry point — runs full suite with HTML report
+├── pytest.ini                      # Pytest discovery configuration
+├── config.json                     # Environment & test configuration
+├── boarding_payload.json           # External data file (Pub/Sub message template)
+├── requirements.txt                # Python dependencies
+├── README.md                       # This document
+│
+├── boarding/                       # Core library package
+│   ├── __init__.py                 # Package exports
+│   ├── constants.py                # Shared constants & JSON schemas
+│   ├── client.py                   # BoardingApiClient (HTTP client)
+│   ├── payload.py                  # PayloadBuilder & utility functions
+│   ├── logger.py                   # Logging configuration
+│   └── assertions.py               # Reusable assertion helpers
+│
+├── tests/                          # Test suite (pytest-discovered)
+│   ├── conftest.py                 # Shared fixtures (config, api, builder, logger)
+│   ├── test_health.py              # Service liveness check
+│   ├── test_terminal_created.py    # TC-01 to TC-14: equipment.terminals.created
+│   ├── test_terminal_lifecycle.py  # TC-20 to TC-50: updated/deactivated/reactivated/deleted
+│   ├── test_merchant.py            # TC-60 to TC-71: merchant events
+│   ├── test_edge_cases.py          # TC-80 to TC-91: unsupported events & security
+│   ├── test_postman_logic.py       # Unit tests for Postman variable resolution
+│   └── test_e2e.py                 # TC-100: full terminal lifecycle E2E
+│
+└── logs/                           # Auto-generated test logs & HTML reports
     ├── boarding_test_YYYYMMDD_HHMMSS.log
     └── report.html
 ```
 
-### Module Breakdown
+### Layer Architecture
 
-| Module / Class | Purpose |
-|---|---|
-| `PayloadBuilder` | Resolves Postman `{{variable}}` placeholders in the boarding_payload.json (replicates the Postman pre-request script logic) |
-| `BoardingApiClient` | HTTP client wrapping the notification endpoint; handles IP/JWT auth, headers, timeouts |
-| `setup_logger()` | Configures dual-output logging (file + console) with timestamps |
-| `assert_ack_ok / assert_ack_bad_request` | Reusable assertion helpers for the WorldpayResponse schema |
-| `TestHealthCheck` | Service liveness verification |
-| `TestTerminalCreated` | 14 test cases for `equipment.terminals.created` |
-| `TestTerminalUpdated` | Tests for `equipment.terminals.updated` |
-| `TestTerminalDeactivated` | Tests for `equipment.terminals.deactivated` |
-| `TestTerminalReactivated` | Tests for `equipment.terminals.reactivated` |
-| `TestTerminalDeleted` | Tests for `equipment.terminals.deleted` |
-| `TestMerchantCreated` | Tests for `merchant.accounts.created` (currently unsupported) |
-| `TestMerchantUpdated` | Tests for `merchant.accounts.updated` |
-| `TestUnsupportedEvent` | Edge cases: unknown types, empty body, malformed JSON |
-| `TestSecurity` | Authentication & IP-based access control tests |
-| `TestPostmanVariableLogic` | Unit-level validation of Postman pre-request script logic |
-| `TestBoardingE2EFlow` | Full lifecycle: create -> update -> deactivate -> reactivate -> delete |
+| Layer | Package / File | Responsibility |
+|-------|---------------|----------------|
+| **Entry Point** | `run_boarding_test.py` | CLI runner — invokes pytest with HTML report |
+| **Test Layer** | `tests/` | All test classes and fixtures; depends on `boarding` |
+| **Core Library** | `boarding/` | Reusable, test-independent components |
+| ↳ API Client | `boarding/client.py` | HTTP requests to the bridge service |
+| ↳ Payload | `boarding/payload.py` | Template resolution & data generation |
+| ↳ Assertions | `boarding/assertions.py` | Schema & status validation |
+| ↳ Logger | `boarding/logger.py` | Dual-output logging setup |
+| ↳ Constants | `boarding/constants.py` | Paths, schemas, shared values |
+| **Config** | `config.json` | Environment, auth, retry settings |
+| **Test Data** | `boarding_payload.json` | Pub/Sub message template with `{{variables}}` |
 
 ## Quick Start
 
 ### 1. Install Dependencies
 
 ```bash
-cd C:\Users\terry.liu\works\works\pubsub\code\new
 pip install -r requirements.txt
 ```
 
@@ -87,9 +100,7 @@ Edit `config.json` to match your target environment:
 
 ### 3. Modify Test Data
 
-QA personnel only need to modify `boarding_payload.json` to change test data. This file is the Pub/Sub message template with `{{variable}}` placeholders that get resolved at runtime.
-
-The `{{variable}}` placeholders are resolved automatically using the same logic as the Postman pre-request script:
+QA personnel only need to modify `boarding_payload.json` to change test data. The `{{variable}}` placeholders are resolved automatically:
 
 | Variable | Source | Description |
 |---|---|---|
@@ -103,34 +114,40 @@ The `{{variable}}` placeholders are resolved automatically using the same logic 
 
 ### 4. Run Tests
 
-**Run all tests:**
+**Run all tests (with banner & HTML report):**
 
 ```bash
 python run_boarding_test.py
 ```
 
-**Run specific test class:**
+**Run all tests via pytest directly:**
 
 ```bash
-pytest run_boarding_test.py::TestTerminalCreated -v
+pytest -v
+```
+
+**Run specific test module:**
+
+```bash
+pytest tests/test_terminal_created.py -v
 ```
 
 **Run a single test:**
 
 ```bash
-pytest run_boarding_test.py::TestTerminalCreated::test_tc01_create_terminal_success -v
-```
-
-**Generate HTML report only:**
-
-```bash
-pytest run_boarding_test.py -v --html=logs/report.html --self-contained-html
+pytest tests/test_terminal_created.py::TestTerminalCreated::test_tc01_create_terminal_success -v
 ```
 
 **Run with keyword filter:**
 
 ```bash
-pytest run_boarding_test.py -v -k "missing_notification"
+pytest -v -k "missing_notification"
+```
+
+**Generate HTML report only:**
+
+```bash
+pytest -v --html=logs/report.html --self-contained-html
 ```
 
 ## Test Case Catalog
@@ -242,23 +259,6 @@ pytest run_boarding_test.py -v -k "missing_notification"
 2. **Async Error Reporting**: For all other validation failures (missing eventType, data, equipmentData fields), the service returns **200 ACK immediately** and reports errors asynchronously via a PATCH request to the Worldpay callback URL.
 3. **Security**: Requests must include either a valid JWT token (OAuth2) or come from an allowed IP address (checked via `X-Forwarded-For` header). Local addresses (127.0.0.1, ::1) are always accepted.
 
-## Boarding Flow (Terminal Created)
-
-```
-1. Receive POST /MerchantSolution/notification
-2. Extract notificationId, eventType, data
-3. Convert data to TerminalCreatedEventData
-4. For each equipmentData:
-   a. Validate: hierarchy, business, location, terminals
-   b. Determine reseller (Worldpay / Swipe Simple / Valutec / Genius)
-   c. Search/Create Merchant in PAXSTORE
-   d. Validate terminal not already exists
-   e. Create Terminal in PAXSTORE
-   f. Push Terminal APK (BroadPOS Vantiv / Valutec / SwipeSimple / Genius)
-   g. Push RKI Key (if not Valutec)
-5. Return 200 ACK (or PATCH error on failure)
-```
-
 ## Troubleshooting
 
 | Issue | Solution |
@@ -268,3 +268,4 @@ pytest run_boarding_test.py -v -k "missing_notification"
 | Tests pass but PAXSTORE operations fail | Check the service logs; async errors are sent via PATCH |
 | `boarding_payload.json` not found | Verify `test_data.payload_file` path in config.json |
 | Unresolved `{{variables}}` | Check that `test_data.*` fields in config.json match the placeholders |
+| `ModuleNotFoundError: boarding` | Run from the project root, or add it to PYTHONPATH |

@@ -1,21 +1,21 @@
 {
     "service": {
-        "base_url": "http://localhost:80",
+        "base_url": "https://dev.pax-worldpay-ben.com",
         "notification_endpoint": "/MerchantSolution/notification",
         "health_endpoint": "/health",
         "request_timeout_seconds": 30
     },
     "auth": {
-        "mode": "ip",
+        "mode": "none",
         "x_forwarded_for": "127.0.0.1",
         "jwt_token": ""
     },
     "test_data": {
         "payload_file": "boarding_payload.json",
-        "merchant_name": "THORNTONS #0304",
-        "terminal_id": "PAX12345678",
-        "model": "A920Pro",
-        "reseller_name": "Worldpay"
+        "merchant_name": "Terry test_data #0304",
+        "terminal_id": "",
+        "model": "Valutec Only PAX A920 MAX",
+        "reseller_name": "Valutec"
     },
     "logging": {
         "level": "DEBUG",
