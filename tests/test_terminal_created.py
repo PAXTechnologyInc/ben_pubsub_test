@@ -1,7 +1,12 @@
 """TEST SUITE: Terminal Created Event (equipment.terminals.created) — TC-01 to TC-14."""
 
+import time
+import pytest
 from boarding.payload import PayloadBuilder
-from boarding.assertions import assert_ack_ok, assert_ack_bad_request, assert_response_schema, assert_error_contains
+from boarding.assertions import (
+    assert_ack_ok, assert_ack_bad_request, assert_response_schema, 
+    assert_error_contains, assert_paxstore_success, assert_paxstore_total_count
+)
 
 
 class TestTerminalCreated:
@@ -16,6 +21,10 @@ class TestTerminalCreated:
         return payload
 
     '''TC-01: Send a valid terminal-created event and expect 200 ACK.
+    Then verify APK count via Paxstore SDK based on model type:
+    - Valutec / Vantiv models: expected totalCount = 1
+    - Swipe Simple / Genius models: expected totalCount = 2
+    
     Test data:
     - merchantName: Terry test_data #0304
     - worldpayMID: 5922820006187008
@@ -25,12 +34,13 @@ class TestTerminalCreated:
     - notificationId: 42379122
     - createdAt: 2026-04-15T15:48:13.000-04:00
     '''
-    def test_tc01_create_terminal_success(self, api, builder, base_payload, logger):
-        """TC-01: Send a valid terminal-created event and expect 200 ACK."""
+    def test_tc01_create_terminal_success(self, api, builder, base_payload, config, paxstore, logger):
+        """TC-01: Send a valid terminal-created event and expect 200 ACK, then verify APK count."""
         logger.info("=" * 60)
         logger.info("TC-01: Create Terminal - Happy Path")
         logger.info("=" * 60)
 
+        # Step 1: Send notification and verify 200 response
         payload = self._make_payload(builder, base_payload)
         logger.info("eventType=%s, notificationId=%s", payload["eventType"], payload["notificationId"])
         logger.info("payload: %s", payload)
@@ -38,6 +48,52 @@ class TestTerminalCreated:
         resp = api.send_notification(payload)
         assert_ack_ok(resp)
         assert_response_schema(resp)
+        logger.info("Step 1 PASSED: Received 200 ACK")
+
+        # Step 2: Wait for async backend processing
+        logger.info("Step 2: Waiting 5 seconds for async backend processing...")
+        time.sleep(5)
+
+        # Step 3: Verify APK count via Paxstore SDK
+        logger.info("Step 3: Verify Terminal APK Count via Paxstore")
+        
+        # Get model from config
+        model = config.get("test_data", {}).get("model", "").lower()
+        logger.info("Model from config: %s", model)
+        
+        # Determine expected APK count based on model
+        if "valutec" in model or "vantiv" in model:
+            expected_count = 1
+            logger.info("Model matched [Valutec/Vantiv], expected_count=%d", expected_count)
+        elif "swipe simple" in model or "genius" in model:
+            expected_count = 2
+            logger.info("Model matched [Swipe Simple/Genius], expected_count=%d", expected_count)
+        else:
+            expected_count = 1  # default
+            logger.warning("Unknown model '%s', using DEFAULT expected_count=%d", model, expected_count)
+
+        # Get vendorTerminalId from payload and calculate Paxstore TID
+        # TID format: "00000022" + vendorTerminalId (4 digits)
+        vendor_terminal_id = payload["data"]["equipmentData"][0]["terminals"][0]["vendorTerminalId"]
+        tid = "00000022" + str(vendor_terminal_id)
+        logger.info("vendorTerminalId: %s -> Paxstore TID: %s", vendor_terminal_id, tid)
+        
+        # Search APKs for this terminal using calculated TID
+        logger.info("Searching APKs for TID=%s", tid)
+        apk_result = paxstore.search_terminal_apk(tid)
+        
+        logger.info("APK search: businessCode=%s, totalCount=%s", 
+                    apk_result.business_code, apk_result.total_count)
+        
+        # Assertions
+        assert_paxstore_success(apk_result)
+        assert_paxstore_total_count(apk_result, expected_count=expected_count)
+        
+        # Log APK details
+        for apk in apk_result.records:
+            logger.info("  APK: %s (%s) - Status: %s", 
+                       apk.package_name, apk.version_name, apk.status)
+        
         logger.info("TC-01 PASSED")
 
     '''

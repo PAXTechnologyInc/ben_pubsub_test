@@ -1,0 +1,16 @@
+# Paxstore API Configuration
+
+paxstore:
+  api:
+    # Base URL for Paxstore API
+    # Production: https://api.paxstores.com/p-market-api
+    # Test: https://api.whatspos.com/p-market-api
+    base_url: "https://api.paxstores.com/p-market-api"
+    
+    # API credentials from PAXSTORE admin console
+    key: "YOUR_API_KEY"
+    token: "YOUR_API_TOKEN"
+
+# RKI (Remote Key Injection) configuration (optional)
+rki:
+  key: "US_Vantiv_PIN_Slot1_ANSI_Data_Slot2"

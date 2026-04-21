@@ -12,6 +12,8 @@ ben_pubsub_test/
 ├── pytest.ini                      # Pytest discovery configuration
 ├── config.json                     # Environment & test configuration
 ├── boarding_payload.json           # External data file (Pub/Sub message template)
+├── paxstore_config.yml             # Paxstore API credentials
+├── pom.xml                         # Maven project for Paxstore SDK
 ├── requirements.txt                # Python dependencies
 ├── README.md                       # This document
 │
@@ -21,10 +23,17 @@ ben_pubsub_test/
 │   ├── client.py                   # BoardingApiClient (HTTP client)
 │   ├── payload.py                  # PayloadBuilder & utility functions
 │   ├── logger.py                   # Logging configuration
-│   └── assertions.py               # Reusable assertion helpers
+│   ├── assertions.py               # Reusable assertion helpers
+│   └── paxstore_bridge.py          # Python-to-Java bridge for Paxstore SDK
+│
+├── src/main/kotlin/com/pax/test/   # Kotlin Paxstore SDK wrapper
+│   ├── PaxstoreConfig.kt           # YAML config loader
+│   ├── PaxstoreClient.kt           # SDK wrapper client
+│   ├── SearchTerminalJson.kt       # Terminal search (JSON output)
+│   └── SearchTerminalApkJson.kt    # APK search (JSON output)
 │
 ├── tests/                          # Test suite (pytest-discovered)
-│   ├── conftest.py                 # Shared fixtures (config, api, builder, logger)
+│   ├── conftest.py                 # Shared fixtures (config, api, builder, logger, paxstore)
 │   ├── test_health.py              # Service liveness check
 │   ├── test_terminal_created.py    # TC-01 to TC-14: equipment.terminals.created
 │   ├── test_terminal_lifecycle.py  # TC-20 to TC-50: updated/deactivated/reactivated/deleted
@@ -57,8 +66,16 @@ ben_pubsub_test/
 
 ### 1. Install Dependencies
 
+**Python dependencies:**
+
 ```bash
 pip install -r requirements.txt
+```
+
+**Maven/Kotlin dependencies (for Paxstore SDK):**
+
+```bash
+mvn compile
 ```
 
 ### 2. Configure the Environment
@@ -156,7 +173,7 @@ pytest -v --html=logs/report.html --self-contained-html
 
 | ID | Test Name | Description | Expected |
 |---|---|---|---|
-| TC-01 | `test_tc01_create_terminal_success` | Valid terminal created event | 200 ACK |
+| TC-01 | `test_tc01_create_terminal_success` | Valid terminal created event + Paxstore APK verification | 200 ACK + APK count check |
 | TC-02 | `test_tc02_create_terminal_missing_notification_id` | Missing notificationId | 400 BAD_REQUEST |
 | TC-03 | `test_tc03_create_terminal_missing_event_type` | Missing eventType | 200 ACK (async PATCH error) |
 | TC-04 | `test_tc04_create_terminal_missing_data` | Missing data field | 200 ACK (async PATCH error) |
@@ -208,6 +225,87 @@ pytest -v --html=logs/report.html --self-contained-html
 | - | `test_worldpay_mid_uniqueness` | Different name -> different MID |
 | - | `test_payload_variable_resolution` | All {{vars}} resolved |
 | TC-100 | `test_tc100_full_terminal_lifecycle` | Full E2E: create -> update -> deactivate -> reactivate -> delete |
+
+## Paxstore SDK Integration
+
+### Overview
+
+TC-01 (`test_tc01_create_terminal_success`) includes **end-to-end verification** via the Paxstore SDK. After sending the terminal creation notification to the Bridge service, the test verifies that the terminal was correctly provisioned in Paxstore by checking the APK push count.
+
+### TC-01 Test Flow
+
+```
+Step 1: Send Notification
+├── POST /MerchantSolution/notification
+├── Payload includes vendorTerminalId (from boarding_payload.json)
+└── Assert: HTTP 200 ACK
+
+Step 2: Wait for Async Processing
+└── Sleep 5 seconds (backend processes notification asynchronously)
+
+Step 3: Verify APK Count via Paxstore SDK
+├── Calculate Paxstore TID from vendorTerminalId
+├── Call Paxstore searchTerminalApk API
+└── Assert: APK count matches expected value based on model
+```
+
+### TID Calculation Rule
+
+The Paxstore TID is calculated from the `vendorTerminalId` in the payload:
+
+```
+Paxstore TID = "00000022" + vendorTerminalId
+```
+
+**Examples:**
+
+| vendorTerminalId | Paxstore TID |
+|------------------|--------------|
+| `7080` | `000000227080` |
+| `76650438` | `0000002276650438` |
+
+### Expected APK Count by Model
+
+The expected APK count is determined by the `model` field in `config.json`:
+
+| Model Contains | Expected APK Count | Log Output |
+|----------------|-------------------|------------|
+| `valutec` or `vantiv` | 1 | `Model matched [Valutec/Vantiv], expected_count=1` |
+| `swipe simple` or `genius` | 2 | `Model matched [Swipe Simple/Genius], expected_count=2` |
+| Other (unknown) | 1 (default) | `WARNING: Unknown model '...', using DEFAULT expected_count=1` |
+
+### Paxstore Configuration
+
+Edit `paxstore_config.yml` with your Paxstore API credentials:
+
+```yaml
+paxstore:
+  baseUrl: "https://api.paxstores.com/p-market-api"
+  apiKey: "YOUR_API_KEY"
+  token: "YOUR_API_TOKEN"
+```
+
+### Architecture
+
+The Paxstore SDK integration uses a **Python-to-Java bridge** architecture:
+
+```
+Python Test (pytest)
+    │
+    ├── boarding/paxstore_bridge.py  (Python wrapper)
+    │       │
+    │       └── subprocess call ──────────────────┐
+    │                                             │
+    │                                             ▼
+    │                              Kotlin/Maven Project
+    │                              ├── SearchTerminalApkJson.kt
+    │                              └── Paxstore Java SDK
+    │                                     │
+    │                                     ▼
+    │                              Paxstore API
+    │                                     │
+    ◄─────────────── JSON Response ───────┘
+```
 
 ## Service API Reference
 
