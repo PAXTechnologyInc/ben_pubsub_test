@@ -10,6 +10,15 @@ build/
 venv/
 env/
 
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+.m2/
+
 # Logs (keep directory, ignore contents)
 logs/*.log
 logs/*.html
@@ -23,3 +32,7 @@ logs/*.html
 # OS
 .DS_Store
 Thumbs.db
+
+# Test output
+test-output/
+surefire-reports/

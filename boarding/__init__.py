@@ -12,6 +12,15 @@ from boarding.assertions import (
     assert_ack_bad_request,
     assert_response_schema,
     assert_error_contains,
+    assert_paxstore_success,
+    assert_paxstore_total_count,
+)
+from boarding.paxstore_bridge import (
+    PaxstoreBridge, 
+    SearchTerminalApkResult, 
+    TerminalApkInfo,
+    SearchTerminalResult,
+    TerminalInfo
 )
 
 __all__ = [
@@ -22,4 +31,11 @@ __all__ = [
     "assert_ack_bad_request",
     "assert_response_schema",
     "assert_error_contains",
+    "assert_paxstore_success",
+    "assert_paxstore_total_count",
+    "PaxstoreBridge",
+    "SearchTerminalApkResult",
+    "TerminalApkInfo",
+    "SearchTerminalResult",
+    "TerminalInfo",
 ]

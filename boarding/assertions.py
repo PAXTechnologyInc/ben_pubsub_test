@@ -45,3 +45,17 @@ def assert_error_contains(resp: requests.Response, expected_code: str = None, ex
     if expected_target:
         targets = [e.get("target") for e in errors]
         assert expected_target in targets, f"Expected target '{expected_target}' in {targets}"
+
+
+# ========== Paxstore SDK Assertions ==========
+
+def assert_paxstore_success(result):
+    """Check Paxstore API returned success (businessCode=0)."""
+    assert result.business_code == 0, \
+        f"Expected Paxstore businessCode=0, got {result.business_code}: {result.message}"
+
+
+def assert_paxstore_total_count(result, expected_count: int):
+    """Check Paxstore API returned expected totalCount."""
+    assert result.total_count == expected_count, \
+        f"Expected totalCount={expected_count}, got {result.total_count}"
